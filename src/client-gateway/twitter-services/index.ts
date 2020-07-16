@@ -16,8 +16,8 @@ class TwitterServices {
     private source = 'twitter';
 
     constructor() {
-      this.consumerKey = process.env['APP.SECURITY.CONSUMER.KEY'] || 'JAXaXGkBBDOauRCc9AwpmcRWf';
-      this.consumerSecret = process.env['APP.SECURITY.CONSUMER.SECRET'] || 'A50fNVe1wzual955LeyG2vXvcE8Zqzh4GvYAEjEtLbkBPgNMp8';
+      this.consumerKey = process.env['APP.SECURITY.CONSUMER.KEY'];
+      this.consumerSecret = process.env['APP.SECURITY.CONSUMER.SECRET'];
       this.callbackURL = process.env.CALLBACK_URL || 'http://localhost:3000/oauth/receiver';
       this.method = 'POST';
       this.apiURL = process.env.API_URL || 'https://api.twitter.com';

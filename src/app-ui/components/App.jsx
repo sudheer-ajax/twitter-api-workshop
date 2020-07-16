@@ -15,9 +15,11 @@ class AppComponent extends React.Component {
             isLoading: false,
             tweetsLoaded: false,
             isCompleted: false,
-            tweets: []
+            tweets: [],
+            appError: false
         };
-        this.handleSortTweets = this.handleSortTweets.bind(this)
+        this.handleSortTweets = this.handleSortTweets.bind(this);
+        this.handleLoginClick = this.handleLoginClick.bind(this)
     }
 
     componentDidMount() {
@@ -88,6 +90,8 @@ class AppComponent extends React.Component {
                 );
             }
 
+        }).catch( error => {
+            this.setState({...this.state,appError:true});
         });
     };
 
@@ -143,8 +147,14 @@ class AppComponent extends React.Component {
             return(
                 <div className="col-sm-9 col-md-7 col-lg-5 mx-auto">
                     <div className="card card-signin my-5">
+                        {
+                            this.state.appError ?
+                                <div className="alert alert-danger" role="alert">
+                                    Please check the Consumer Key & Secret
+                                </div> : ''
+                        }
                         <div className="card-body" style={{"textAlign": "center"}}>
-                            <h5 class="card-title text-center">Sign In</h5>
+                            <h5 className="card-title text-center">Sign In</h5>
                             <svg
                                 onClick={this.handleLoginClick}
                                 xmlns="http://www.w3.org/2000/svg"

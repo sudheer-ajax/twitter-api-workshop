@@ -20,7 +20,6 @@
     "eslint": "eslint src/server.ts",
     "postinstall": "chmod +x ./scripts/dev.sh",
     "build": "webpack -p && tsc",
-    "lint": "./node_modules/eslint/bin/eslint.js  src --ext .ts",
     "dev": "./scripts/dev.sh",
     "start": "node dist/server.js",
     "test": "jest",

@@ -23,3 +23,23 @@ A simple app, authenticate with twitter api and display tweets
 * Express (>=4.17.1)
 
 
+
+```bash
+# Clone the repo.
+git clone git@github.com:sudheer-ajax/twitter-api-workshop.git;
+
+# Goto the cloned project folder.
+cd twitter-api-workshop;
+
+# Install NPM dependencies.
+# Note: You can review the list of dependencies from the below link.
+npm install;
+
+# Edit your .env.default file using any editor of your choice.
+# Please Note: You should add all the configurations details
+# or else default values will be used!
+vim .env.default;
+
+# Run the app (Docker clinet is required for this commain)
+npm run dev;
+```

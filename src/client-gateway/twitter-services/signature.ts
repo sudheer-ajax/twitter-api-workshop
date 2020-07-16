@@ -1,5 +1,37 @@
 import { HmacSHA1, enc } from 'crypto-js';
 
+const makeSignature = (
+  params: any,
+  method: string,
+  apiUrl: string,
+  consumerSecret: string
+) => {
+  const paramsBaseString = Object.keys(params)
+    .sort()
+    .reduce((prev: string, el: any) => (prev += `&${el}=${params[el]}`), '')
+    .substr(1);
+
+  const signatureBaseString = `${method.toUpperCase()}&${encodeURIComponent(
+    apiUrl
+  )}&${encodeURIComponent(paramsBaseString)}`;
+
+  const signingKey = `${encodeURIComponent(consumerSecret)}&`;
+
+  const oauthSignature = enc.Base64.stringify(
+    HmacSHA1(signatureBaseString, signingKey)
+  );
+
+  const paramsWithSignature = {
+    ...params,
+    oauth_signature: encodeURIComponent(oauthSignature)
+  };
+
+  return Object.keys(paramsWithSignature)
+    .sort()
+    .reduce((prev: string, el: any) => (prev += `,${el}="${paramsWithSignature[el]}"`), '')
+    .substr(1);
+};
+
 export const requestTokenSignature = ({
   method,
   apiUrl,
@@ -86,36 +118,4 @@ export const accessAuthorizedSignature = ({
   };
 
   return makeSignature(params, method, apiUrl, consumerSecret);
-};
-
-const makeSignature = (
-  params: any,
-  method: string,
-  apiUrl: string,
-  consumerSecret: string
-) => {
-  const paramsBaseString = Object.keys(params)
-    .sort()
-    .reduce((prev: string, el: any) => (prev += `&${el}=${params[el]}`), '')
-    .substr(1);
-
-  const signatureBaseString = `${method.toUpperCase()}&${encodeURIComponent(
-    apiUrl
-  )}&${encodeURIComponent(paramsBaseString)}`;
-
-  const signingKey = `${encodeURIComponent(consumerSecret)}&`;
-
-  const oauth_signature = enc.Base64.stringify(
-    HmacSHA1(signatureBaseString, signingKey)
-  );
-
-  const paramsWithSignature = {
-    ...params,
-    oauth_signature: encodeURIComponent(oauth_signature)
-  };
-
-  return Object.keys(paramsWithSignature)
-    .sort()
-    .reduce((prev: string, el: any) => (prev += `,${el}="${paramsWithSignature[el]}"`), '')
-    .substr(1);
 };
