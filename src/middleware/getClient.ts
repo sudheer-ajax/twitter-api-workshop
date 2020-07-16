@@ -1,10 +1,9 @@
-
-import twitterService from '../client-gateway/twitter-services'
+import TwitterService from '../client-gateway/twitter-services';
 
 export const getClient = (source:string) => {
-    if(source === 'twitter') {
-        return twitterService
-    }
+  if (source === 'twitter') {
+    return TwitterService;
+  }
 
-    return twitterService
-}
+  return TwitterService;
+};

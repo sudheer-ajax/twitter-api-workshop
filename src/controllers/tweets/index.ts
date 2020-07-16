@@ -1,6 +1,5 @@
-
-import getTweets from './tweets'
+import getTweets from './tweets';
 
 export {
-    getTweets
-}
+  getTweets
+};
