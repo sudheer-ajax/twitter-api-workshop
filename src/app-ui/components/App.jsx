@@ -46,6 +46,7 @@ class AppComponent extends React.Component {
         } else {
             window.onmessage = async ({ data: { type, data } }) => {
                 if (type === "authorized") {
+                    this.setState({...this.state, isLoading:true});
                     const getTweetsConfig = {
                         apiUrl: "/search/tweets",
                         method: "POST",
@@ -58,7 +59,7 @@ class AppComponent extends React.Component {
                         },
                         data: getTweetsConfig.data
                     }).then( response => {
-                        this.setState({...this.state, ...{ tweetsLoaded:true, tweets: response.data.statuses} })
+                        this.setState({...this.state, ...{ isLoading:false, tweetsLoaded:true, tweets: response.data.statuses} })
                     })
                 }
             };
@@ -66,6 +67,7 @@ class AppComponent extends React.Component {
     };
 
     async handleLoginClick() {
+        this.setState({...this.state, isLoading:true});
         const requestTokenConfig = {
             apiUrl: "/oauth/request-token",
             method: "POST",
@@ -78,7 +80,7 @@ class AppComponent extends React.Component {
             },
             data: { source : "twitter"}
         }).then(response => {
-
+            this.setState({...this.state,appError:false, isLoading:false});
             if (response.data.oauth_callback_confirmed === "true") {
                 const popup = openWindow({
                     url: `https://api.twitter.com/oauth/authorize?oauth_token=${response.data.oauth_token}`,
@@ -91,7 +93,7 @@ class AppComponent extends React.Component {
             }
 
         }).catch( error => {
-            this.setState({...this.state,appError:true});
+            this.setState({...this.state,appError:true, isLoading:false});
         });
     };
 
@@ -155,6 +157,12 @@ class AppComponent extends React.Component {
                         }
                         <div className="card-body" style={{"textAlign": "center"}}>
                             <h5 className="card-title text-center">Sign In</h5>
+                            {
+                                this.state.isLoading ?
+                                    <div className="loading-mask">
+                                        <p></p>
+                                    </div> : ''
+                            }
                             <svg
                                 onClick={this.handleLoginClick}
                                 xmlns="http://www.w3.org/2000/svg"
